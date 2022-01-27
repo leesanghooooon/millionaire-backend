@@ -29,7 +29,7 @@
         (
             #{finPrdtUid, jdbcType=VARCHAR}
             , #{userId, jdbcType=VARCHAR}
-            , #{finCoNo, jdbcType=INTEGER}
+            , #{finCoNo, jdbcType=VARCHAR}
             , #{finPrdtCd, jdbcType=VARCHAR}
             , #{finPrdtNm, jdbcType=VARCHAR}
             , #{savMoney, jdbcType=INTEGER}

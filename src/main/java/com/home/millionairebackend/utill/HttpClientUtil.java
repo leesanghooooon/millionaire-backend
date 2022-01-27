@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import com.home.millionairebackend.constant.MillionaireCommonConstant;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
@@ -144,18 +145,19 @@ public class HttpClientUtil {
                 
                 HttpPost httpPost = new HttpPost(url);
                 StringEntity entity = new StringEntity(jsonData, "UTF-8");
+                log.info("entity : {}", entity.toString());
                 httpPost.setEntity(entity);
                 httpPost.setHeader("Accept", contentType);
                 httpPost.setHeader("Content-type", contentType);
-                
+
                 CloseableHttpResponse response = client.execute(httpPost);
-                
+
                 int statusCode = response.getStatusLine().getStatusCode();
-                
+
                 rslt.put("statusCode", statusCode);
 
                 log.info("response : {}", response.toString());
-                
+
                 if(HttpStatus.SC_OK == statusCode) {
                     rsltJson = EntityUtils.toString(response.getEntity(), "UTF-8");
                     rslt.put("rsltJson", rsltJson);
@@ -534,6 +536,105 @@ public class HttpClientUtil {
         
         
         return rslt;
+    }
+
+    /**
+     *
+     * <pre>
+     * 1. 개요       : Http Post 방식 요청/응답 데이터 Json
+     * 2. 처리내용    : Http Post 방식 요청/응답 데이터 Json 처리함
+     * </pre>
+     * @Method Name : doPostByFrom
+     * @date        : 2021. 9. 7.
+     * @author      : 2190014
+     * @history     :
+     * ================================================================================
+     * 변경일       작성자                          내용
+     * --------------------------------------------------------------------------------
+     * 2021.09.07 2190014          최초 작성
+     *
+     * @param retryCnt
+     * @param url
+     * @param contentType
+     * @param param
+     * @return
+     */
+    public static Map<String,Object> doPostByFrom(final int retryCnt, final String url, final String contentType, final Map<Object,String> paramMap) {
+
+        log.info(" doPostByJson url :: {} ", url);
+        log.info(" doPostByJson contentType :: {} ", contentType);
+        log.info(" doPostByJson paramMap :: {} ", paramMap);
+
+        Map<String,Object> rslt = new HashMap<>();
+
+        String rsltJson = "";
+
+        int tryCnt = 1;
+
+        while( tryCnt <= retryCnt ) {
+
+            try (CloseableHttpClient client = HttpClients.createDefault()) {
+
+                HttpPost httpPost = new HttpPost(url);
+
+                List<NameValuePair> nameValuePairs = setHttpNameValuePair(paramMap);
+
+                httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                httpPost.setHeader("Content-type", contentType);
+
+                CloseableHttpResponse response = client.execute(httpPost);
+
+                int statusCode = response.getStatusLine().getStatusCode();
+
+                rslt.put("statusCode", statusCode);
+
+                log.info("response : {}", response.toString());
+
+                if(HttpStatus.SC_OK == statusCode) {
+                    rsltJson = EntityUtils.toString(response.getEntity(), "UTF-8");
+                    rslt.put("rsltJson", rsltJson);
+                    log.info("rsltJson :: {}", rsltJson);
+                    break;
+                }else {
+                    tryCnt++;
+
+                    if(retryCnt == tryCnt) {
+                        String errMsg = "["+ statusCode +"] doPostByJson response code not valid";
+                        log.info("errMsg :: {}", errMsg);
+                    }
+                }
+
+            }catch(Exception e){
+                tryCnt++;
+
+                if(retryCnt == tryCnt) {
+                    String errMsg = "doPostByJson error has occurred";
+                    log.error(errMsg, e);
+
+                    rslt.put("statusCode", 999);
+                }
+
+            }
+
+        }
+
+        return rslt;
+    }
+
+    private static List<NameValuePair> setHttpNameValuePair(Map<Object,String> paramMap){
+        List<NameValuePair> nameValuePairs = new ArrayList<>();
+
+        if(MapUtils.isNotEmpty(paramMap)){
+            for (Map.Entry<Object, String> entry : paramMap.entrySet()) {
+                String key = (String) entry.getKey();
+                String value = entry.getValue();
+                nameValuePairs.add(new BasicNameValuePair(key,value));
+            }
+        }else{
+            return nameValuePairs;
+        }
+
+        return nameValuePairs;
     }
 
 }
