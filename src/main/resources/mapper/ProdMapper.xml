@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-..mybatis.org..DTD Mapper 3.0..EN"
+        "http:..mybatis.org.dtd.mybatis-3-mapper.dtd">
+
+<mapper namespace="com.home.millionairebackend.mapper.ProdMapper">
+
+    <!-- 등록 -->
+    <insert id="insertProduct" parameterType="com.home.millionairebackend.model.Product">
+        INSERT INTO
+        product
+        (
+            fin_prdt_uid
+            , user_id
+            , fin_co_no
+            , fin_prdt_cd
+            , fin_prdt_nm
+            , sav_money
+            , max_limit
+            , intr_rate_type
+            , save_trm
+            , rsrv_type
+            , intr_rate
+            , intr_rate2
+            , reg_dtm
+            , upt_dtm
+        )
+        VALUES
+        (
+            #{finPrdtUid, jdbcType=VARCHAR}
+            , #{userId, jdbcType=VARCHAR}
+            , #{finCoNo, jdbcType=INTEGER}
+            , #{finPrdtCd, jdbcType=VARCHAR}
+            , #{finPrdtNm, jdbcType=VARCHAR}
+            , #{savMoney, jdbcType=INTEGER}
+            , #{maxLimit, jdbcType=INTEGER}
+            , #{intrRateType, jdbcType=CHAR}
+            , #{saveTrm, jdbcType=INTEGER}
+            , #{rsrvType, jdbcType=CHAR}
+            , #{intrRate, jdbcType=DOUBLE}
+            , #{intrRate2, jdbcType=DOUBLE}
+            , now()
+            , now()
+        )
+    </insert>
+
+</mapper>

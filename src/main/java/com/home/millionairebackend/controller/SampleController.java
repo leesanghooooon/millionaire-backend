@@ -17,7 +17,6 @@ public class SampleController {
     @GetMapping
     public ResponseEntity<?> apiTest() {
         entity = new ResponseEntity<>("SUCESS", HttpStatus.OK);
-
         return entity;
     }
 }
