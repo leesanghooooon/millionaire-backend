@@ -14,4 +14,7 @@ public class CompanySearchMeta {
     private String err_msg;
     private List<CompanySearch> baseList;
     private List<CompanySearchOption> optionList;
+
+    //SearchData
+    private String top_fin_grp_no;
 }

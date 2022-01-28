@@ -142,7 +142,6 @@ public class HttpClientUtil {
             
             try (CloseableHttpClient client = HttpClients.createDefault()) {
                 
-                
                 HttpPost httpPost = new HttpPost(url);
                 StringEntity entity = new StringEntity(jsonData, "UTF-8");
                 log.info("entity : {}", entity.toString());
@@ -556,7 +555,6 @@ public class HttpClientUtil {
      * @param retryCnt
      * @param url
      * @param contentType
-     * @param param
      * @return
      */
     public static Map<String,Object> doPostByFrom(final int retryCnt, final String url, final String contentType, final Map<Object,String> paramMap) {

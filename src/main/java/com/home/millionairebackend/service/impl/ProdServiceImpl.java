@@ -16,10 +16,6 @@ public class ProdServiceImpl implements ProdService {
     @Autowired
     private ProdMapper mapper;
 
-//    public ProdServiceImpl(ProdMapper prodMapper) {
-//        this.mapper = prodMapper;
-//    }
-
     public void insertProduct(Product product) {
         log.info(product.toString());
         mapper.insertProduct(product);

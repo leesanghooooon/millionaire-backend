@@ -43,7 +43,7 @@ public class SampleController {
     ResponseEntity<?> entity = null;
 
     @ApiOperation(value = "TEST API", notes = "TEST API입니다.")
-    @GetMapping
+    @PostMapping("/sample")
     public ResponseEntity<?> apiTest() {
 
         StandardPBEStringEncryptor spe = new StandardPBEStringEncryptor();

@@ -13,8 +13,8 @@ public class MillionaireCommonConstant {
     //###################################################
     //### Http 통신 content-type
     //###################################################
-    public static final String HTTP_CONT_TYP_JSON   = "application/json";
-    public static final String HTTP_CONT_TYP_XML    = "application/xml";
+    public static final String HTTP_CONT_TYP_JSON   = "application/json;";
+    public static final String HTTP_CONT_TYP_XML    = "application/xml;";
     public static final String HTTP_CONT_TYP_FROM    = "application/x-www-form-urlencoded;";
 
     //###################################################

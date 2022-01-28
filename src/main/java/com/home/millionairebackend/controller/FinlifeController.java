@@ -41,9 +41,6 @@ public class FinlifeController {
 
         String url = MillionaireCommonConstant.FINLIFE_API_COMPANY_JSON;
 
-        topFinGrpNo = "020000";
-        pageNo = "1";
-
         Map<Object,String> param = new HashMap<>();
         param.put("auth", MillionaireCommonConstant.FINLIFE_AUTH);
         param.put("topFinGrpNo",topFinGrpNo);

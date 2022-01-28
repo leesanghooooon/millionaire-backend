@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-..mybatis.org..DTD Mapper 3.0..EN"
+        "http:..mybatis.org.dtd.mybatis-3-mapper.dtd">
+
+<mapper namespace="com.home.millionairebackend.mapper.FinlifeMapper">
+
+    <!-- finlife 금융회사 테이블 등록 -->
+    <insert id="insertCompany" parameterType="java.util.HashMap">
+        INSERT INTO
+            f_company
+        (
+            dcls_month
+            , top_fin_grp_no
+            , fin_co_no
+            , kor_co_nm
+            , dcls_chrg_man
+            , homp_url
+            , cal_tel
+            , reg_dtm
+            , upt_dtm
+        )
+        VALUES
+        (
+            #{dcls_month,       jdbcType=VARCHAR}
+            , #{top_fin_grp_no, jdbcType=VARCHAR}
+            , #{fin_co_no,      jdbcType=VARCHAR}
+            , #{kor_co_nm,      jdbcType=VARCHAR}
+            , #{dcls_chrg_man,  jdbcType=VARCHAR}
+            , #{homp_url,       jdbcType=VARCHAR}
+            , #{cal_tel,        jdbcType=INTEGER}
+            , now()
+            , now()
+        )
+        ON DUPLICATE KEY
+        UPDATE
+        upt_dtm = now()
+    </insert>
+
+    <insert id="insertCompanyOption" parameterType="com.home.millionairebackend.model.finlife.CompanySearchOption">
+        INSERT INTO
+            f_company_opt
+        (
+            dcls_month
+            , fin_co_no
+            , area_cd
+            , area_nm
+            , exis_yn
+            , reg_dtm
+            , upt_dtm
+        )
+        VALUES
+        (
+            #{dcls_month,       jdbcType=VARCHAR}
+            , #{fin_co_no,      jdbcType=VARCHAR}
+            , #{area_cd,      jdbcType=VARCHAR}
+            , #{area_nm,  jdbcType=VARCHAR}
+            , #{exis_yn,       jdbcType=VARCHAR}
+            , now()
+            , now()
+        )
+        ON DUPLICATE KEY
+        UPDATE
+        upt_dtm = now()
+    </insert>
+
+</mapper>
