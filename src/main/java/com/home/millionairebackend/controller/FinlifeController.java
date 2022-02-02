@@ -38,7 +38,7 @@ public class FinlifeController {
     @ApiOperation(value = "금융회사 API 상세", notes = "금융회사 API 상세")
     @PostMapping("/getCompanySearch")
     public ResponseEntity<?> getCompanySearch(String topFinGrpNo, String pageNo) throws JsonProcessingException {
-
+        log.info("=========> START [getCompanySearch]");
         String url = MillionaireCommonConstant.FINLIFE_API_COMPANY_JSON;
 
         Map<Object,String> param = new HashMap<>();
@@ -73,13 +73,10 @@ public class FinlifeController {
     }
 
     @ApiOperation(value = "적금 API 상세", notes = "적금 API 상세")
-    @PostMapping
+    @PostMapping("/getSavingProductsSearch")
     public ResponseEntity<?> getSavingProductsSearch(String topFinGrpNo,String pageNo) throws JsonProcessingException {
-
+        log.info("=========> START [getSavingProductsSearch]");
         String url = MillionaireCommonConstant.FINLIFE_API_SAVINGPRODUCTS_JSON;
-
-        topFinGrpNo = "020000";
-        pageNo = "1";
 
         Map<Object,String> param = new HashMap<>();
         param.put("auth", MillionaireCommonConstant.FINLIFE_AUTH);

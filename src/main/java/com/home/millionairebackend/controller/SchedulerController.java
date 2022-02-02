@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.home.millionairebackend.constant.MillionaireCommonConstant;
 import com.home.millionairebackend.model.FinlifeResultCd;
 import com.home.millionairebackend.model.finlife.CompanySearchResponse;
+import com.home.millionairebackend.model.finlife.SavingProductsSearchResponse;
 import com.home.millionairebackend.service.FinlifeService;
 import com.home.millionairebackend.utill.HttpClientUtil;
 import com.home.millionairebackend.utill.JsonUtil;
@@ -31,8 +32,8 @@ public class SchedulerController {
 
 //    @Scheduled(cron = "0 * 9 * * ?")
 //    @Scheduled(fixedDelay = 200000)
-    public void cronJobSch() throws JsonProcessingException {
-        String url = "http://localhost:8081/api/finlife/getCompanySearch?";
+    public void cronJobSchInsertCompany() throws JsonProcessingException {
+        String url = "http://localhost:8081/api/finlife/getCompanySearch";
 
         String[] topFinGrpNoArr = {"020000", "030200", "030300", "050000", "060000"};
 
@@ -43,7 +44,6 @@ public class SchedulerController {
             param.put("pageNo","0");
 
             Map<String,Object> basRsltMap = httpClientUtil.doPostByFrom(1, url, MillionaireCommonConstant.HTTP_CONT_TYP_FROM, param);
-
             if(MapUtils.isNotEmpty(basRsltMap)) {
 
                 int statusCode = (Integer) basRsltMap.get("statusCode");
@@ -81,6 +81,66 @@ public class SchedulerController {
                         log.error(codeInfo.getMessage());
                     }
                 }
+
+            }
+
+        }
+
+    }
+
+//    @Scheduled(fixedDelay = 200000)
+    public void cronJobSchInsertSaveProducts() throws JsonProcessingException {
+        String url = "http://localhost:8081/api/finlife/getSavingProductsSearch";
+
+        String[] topFinGrpNoArr = {"020000", "030200", "030300", "050000", "060000"};
+
+        for(String topFinGrpNo : topFinGrpNoArr){
+
+            Map<Object,String> param = new HashMap<>();
+            param.put("topFinGrpNo", topFinGrpNo);
+            param.put("pageNo","0");
+
+            Map<String,Object> basRsltMap = httpClientUtil.doPostByFrom(1, url, MillionaireCommonConstant.HTTP_CONT_TYP_FROM, param);
+            if(MapUtils.isNotEmpty(basRsltMap)) {
+
+                int statusCode = (Integer) basRsltMap.get("statusCode");
+                if (200 == statusCode) {
+                    SavingProductsSearchResponse basResponse = jsonUtil.jsonStringTobean((String) basRsltMap.get("rsltJson"), SavingProductsSearchResponse.class);
+
+                    FinlifeResultCd codeInfo = FinlifeResultCd.findMessage(basResponse.getResult().getErr_cd());
+                    if("000".equals(codeInfo.getCode())){
+                        String maxPageNo = basResponse.getResult().getMax_page_no();
+                        String nowPageNo= basResponse.getResult().getNow_page_no();
+                        int maxCnt = Integer.parseInt(maxPageNo);
+                        int nowCnt = Integer.parseInt(nowPageNo);
+
+                        while (true){
+                            if(maxCnt >= nowCnt){
+                                nowCnt++;
+                                nowPageNo = Integer.toString(nowCnt);
+                                param.put("pageNo",nowPageNo);
+
+                                Map<String,Object> rsltMap = httpClientUtil.doPostByFrom(1, url, MillionaireCommonConstant.HTTP_CONT_TYP_FROM, param);
+                                statusCode = (Integer) rsltMap.get("statusCode");
+                                if (200 == statusCode) {
+                                    SavingProductsSearchResponse savingProductsSearchResponse = jsonUtil.jsonStringTobean((String) rsltMap.get("rsltJson"), SavingProductsSearchResponse.class);
+                                    savingProductsSearchResponse.getResult().setTop_fin_grp_no(topFinGrpNo);
+                                    finlifeService.insertSavingProductsInfo(savingProductsSearchResponse);
+                                }else{
+                                    log.error(codeInfo.getMessage());
+                                }
+                            }
+                            if(maxCnt == nowCnt){
+                                break;
+                            }
+                        }
+
+                    }else{
+                        log.error(codeInfo.getMessage());
+                    }
+
+                }
+
             }
 
         }

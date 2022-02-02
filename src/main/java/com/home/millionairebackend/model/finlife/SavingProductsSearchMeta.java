@@ -14,4 +14,7 @@ public class SavingProductsSearchMeta {
     private String err_msg;
     private List<SavingProductsSearch> baseList;
     private List<SavingProductsSearchOption> optionList;
+
+    //SearchData
+    private String top_fin_grp_no;
 }

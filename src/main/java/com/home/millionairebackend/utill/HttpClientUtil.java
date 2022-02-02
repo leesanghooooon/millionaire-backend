@@ -569,7 +569,7 @@ public class HttpClientUtil {
 
         int tryCnt = 1;
 
-        while( tryCnt <= retryCnt ) {
+        while(retryCnt >= tryCnt) {
 
             try (CloseableHttpClient client = HttpClients.createDefault()) {
 
@@ -585,33 +585,36 @@ public class HttpClientUtil {
                 int statusCode = response.getStatusLine().getStatusCode();
 
                 rslt.put("statusCode", statusCode);
-
                 log.info("response : {}", response.toString());
 
                 if(HttpStatus.SC_OK == statusCode) {
                     rsltJson = EntityUtils.toString(response.getEntity(), "UTF-8");
                     rslt.put("rsltJson", rsltJson);
                     log.info("rsltJson :: {}", rsltJson);
+
+                    client.close();
                     break;
                 }else {
-                    tryCnt++;
-
                     if(retryCnt == tryCnt) {
                         String errMsg = "["+ statusCode +"] doPostByJson response code not valid";
                         log.info("errMsg :: {}", errMsg);
+                        client.close();
+                        break;
+                    }else{
+                        tryCnt++;
                     }
                 }
 
             }catch(Exception e){
-                tryCnt++;
+                String errMsg = "doPostByJson error has occurred";
+                log.error(errMsg, e);
 
-                if(retryCnt == tryCnt) {
-                    String errMsg = "doPostByJson error has occurred";
-                    log.error(errMsg, e);
+                rslt.put("statusCode", 999);
+                break;
+            }
 
-                    rslt.put("statusCode", 999);
-                }
-
+            if(retryCnt == tryCnt) {
+                break;
             }
 
         }

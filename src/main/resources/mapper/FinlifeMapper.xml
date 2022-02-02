@@ -64,4 +64,89 @@
         upt_dtm = now()
     </insert>
 
+    <!-- finlife 적금 상품 등록 -->
+    <insert id="insertSavingProduct" parameterType="java.util.HashMap">
+        INSERT INTO
+            f_products
+        (
+            dcls_month
+            , top_fin_grp_no
+            , fin_co_no
+            , fin_prdt_cd
+            , fin_prdt_nm
+            , join_way
+            , mtrt_int
+            , spcl_cnd
+            , join_deny
+            , join_member
+            , etc_note
+            , max_limit
+            , dcls_strt_day
+            , dcls_end_day
+            , fin_co_subm_day
+            , reg_dtm
+            , upt_dtm
+        )
+        VALUES
+        (
+            #{dcls_month,       jdbcType=VARCHAR}
+            , #{top_fin_grp_no, jdbcType=VARCHAR}
+            , #{fin_co_no,      jdbcType=VARCHAR}
+            , #{fin_prdt_cd,    jdbcType=VARCHAR}
+            , #{fin_prdt_nm,    jdbcType=VARCHAR}
+            , #{join_way,       jdbcType=VARCHAR}
+            , #{mtrt_int,       jdbcType=VARCHAR}
+            , #{spcl_cnd,       jdbcType=VARCHAR}
+            , #{join_deny,      jdbcType=CHAR}
+            , #{join_member,    jdbcType=CHAR}
+            , #{etc_note,       jdbcType=CHAR}
+            , #{max_limit,      jdbcType=INTEGER}
+            , #{dcls_strt_day,  jdbcType=VARCHAR}
+            , #{dcls_end_day,   jdbcType=VARCHAR}
+            , #{fin_co_subm_day,jdbcType=VARCHAR}
+            , now()
+            , now()
+        )
+        ON DUPLICATE KEY
+        UPDATE
+        upt_dtm = now()
+    </insert>
+
+    <insert id="insertSavingProductOption" parameterType="com.home.millionairebackend.model.finlife.SavingProductsSearchOption">
+        INSERT INTO
+            f_products_opt
+        (
+            dcls_month
+            , fin_co_no
+            , fin_prdt_cd
+            , intr_rate_type
+            , rsrv_type
+            , intr_rate_type_nm
+            , rsrv_type_nm
+            , save_trm
+            , intr_rate
+            , intr_rate2
+            , reg_dtm
+            , upt_dtm
+        )
+        VALUES
+        (
+            #{dcls_month,           jdbcType=VARCHAR}
+            , #{fin_co_no,          jdbcType=VARCHAR}
+            , #{fin_prdt_cd,        jdbcType=VARCHAR}
+            , #{intr_rate_type,     jdbcType=CHAR}
+            , #{rsrv_type,          jdbcType=CHAR}
+            , #{intr_rate_type_nm,  jdbcType=VARCHAR}
+            , #{rsrv_type_nm,       jdbcType=VARCHAR}
+            , #{save_trm,           jdbcType=VARCHAR}
+            , #{intr_rate,          jdbcType=DOUBLE}
+            , #{intr_rate2,         jdbcType=DOUBLE}
+            , now()
+            , now()
+        )
+        ON DUPLICATE KEY
+        UPDATE
+        upt_dtm = now()
+    </insert>
+
 </mapper>
