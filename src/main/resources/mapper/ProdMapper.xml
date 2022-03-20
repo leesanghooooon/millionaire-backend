@@ -22,6 +22,7 @@
             , rsrv_type
             , intr_rate
             , intr_rate2
+            , str_dtm
             , reg_dtm
             , upt_dtm
         )
@@ -39,9 +40,48 @@
             , #{rsrvType, jdbcType=CHAR}
             , #{intrRate, jdbcType=DOUBLE}
             , #{intrRate2, jdbcType=DOUBLE}
+            , #{strDtm, jdbcType=VARCHAR}
             , now()
             , now()
         )
     </insert>
+
+    <select id="selectProductList" parameterType="com.home.millionairebackend.model.Product" resultType="com.home.millionairebackend.model.Product">
+        SELECT a1.fin_co_no
+        , a3.kor_co_nm
+        , a1.fin_prdt_cd
+        , a2.fin_prdt_nm
+        , a1.intr_rate_type
+        , a1.rsrv_type
+        , a1.intr_rate_type_nm
+        , a1.rsrv_type_nm
+        , a1.save_trm
+        , a1.intr_rate
+        , a1.intr_rate2
+        , a2.max_limit
+        , a2.join_way
+        , a2.mtrt_int
+        , a2.spcl_cnd
+        , a2.join_member
+        , a2.etc_note
+        FROM f_products_opt AS a1
+        LEFT OUTER JOIN f_products AS a2
+        ON a1.fin_prdt_cd = a2.fin_prdt_cd
+        LEFT OUTER JOIN f_company AS a3
+        ON a2.fin_co_no = a3.fin_co_no
+        WHERE 1 = 1
+        <if test='finCoNo != null and finCoNo != ""'>
+            AND a3.fin_co_no = #{finCoNo}
+        </if>
+        <if test='finPrdtCd != null and finPrdtCd != ""'>
+            AND a1.fin_prdt_cd = #{finPrdtCd}
+        </if>
+        <if test='finPrdtNm != null and finPrdtNm != ""'>
+            AND a2.fin_prdt_nm LIKE '%${finPrdtNm}%'
+        </if>
+        <if test='korCoNm != null and korCoNm != ""'>
+            AND a3.kor_co_nm LIKE '%${korCoNm}%'
+        </if>
+    </select>
 
 </mapper>

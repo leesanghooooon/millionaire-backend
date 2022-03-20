@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Slf4j
 @Transactional
@@ -19,6 +21,12 @@ public class ProdServiceImpl implements ProdService {
     public void insertProduct(Product product) {
         log.info(product.toString());
         mapper.insertProduct(product);
+    }
+
+    public List<Product> selectProductList(Product product){
+        log.info(product.toString());
+        List<Product> list = mapper.selectProductList(product);
+        return list;
     }
 
 }

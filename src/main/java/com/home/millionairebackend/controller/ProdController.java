@@ -8,11 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -25,6 +23,16 @@ public class ProdController {
     ProdService prodService;
 
     ResponseEntity<?> entity = null;
+
+    @ApiOperation(value = "selectProductList", notes = "금융상품리스트 조회")
+    @PostMapping("/selectProductList")
+    public ResponseEntity<?> selectProductList(@RequestBody Product product) {
+//        Product product = new Product();
+        List<Product> list = prodService.selectProductList(product);
+        log.info("list size : {}",list.size());
+        entity = new ResponseEntity<>(list, HttpStatus.OK);
+        return entity;
+    }
 
 //    {
 //        "finCoNo": "0010001",
@@ -41,7 +49,7 @@ public class ProdController {
 //            "userId": "admin"
 //    }
     @ApiOperation(value = "Product Data Insert", notes = "상품등록 API")
-    @PostMapping
+    @PostMapping("/insertProduct")
     public ResponseEntity<?> insertProduct(@RequestBody Product product) {
         product.setFinPrdtUid(UUID.randomUUID().toString());
         log.info(product.toString());

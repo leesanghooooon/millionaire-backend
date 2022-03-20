@@ -24,8 +24,6 @@ public class FinlifeServiceImpl implements FinlifeService {
     private FinlifeMapper mapper;
 
     public void insertCompanyInfo(CompanySearchResponse companySearchResponse) {
-        log.info(companySearchResponse.toString());
-
         FinlifeResultCd codeInfo = FinlifeResultCd.findMessage(companySearchResponse.getResult().getErr_cd());
         if("000".equals(codeInfo.getCode())){
             String topFinGrpNo = companySearchResponse.getResult().getTop_fin_grp_no();
@@ -42,8 +40,6 @@ public class FinlifeServiceImpl implements FinlifeService {
     }
 
     public void insertSavingProductsInfo(SavingProductsSearchResponse savingProductsSearchResponse) {
-        log.info(savingProductsSearchResponse.toString());
-
         FinlifeResultCd codeInfo = FinlifeResultCd.findMessage(savingProductsSearchResponse.getResult().getErr_cd());
         if("000".equals(codeInfo.getCode())){
             String topFinGrpNo = savingProductsSearchResponse.getResult().getTop_fin_grp_no();

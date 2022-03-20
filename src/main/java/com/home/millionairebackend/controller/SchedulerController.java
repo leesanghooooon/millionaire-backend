@@ -37,6 +37,7 @@ public class SchedulerController {
 
         String[] topFinGrpNoArr = {"020000", "030200", "030300", "050000", "060000"};
 
+        log.info("=================== cronJobSchInsertCompany [START]");
         for(String topFinGrpNo : topFinGrpNoArr){
 
             Map<Object,String> param = new HashMap<>();
@@ -85,6 +86,7 @@ public class SchedulerController {
             }
 
         }
+        log.info("=================== cronJobSchInsertCompany [END]");
 
     }
 
@@ -94,6 +96,7 @@ public class SchedulerController {
 
         String[] topFinGrpNoArr = {"020000", "030200", "030300", "050000", "060000"};
 
+        log.info("=================== cronJobSchInsertSaveProducts [START]");
         for(String topFinGrpNo : topFinGrpNoArr){
 
             Map<Object,String> param = new HashMap<>();
@@ -144,6 +147,7 @@ public class SchedulerController {
             }
 
         }
+        log.info("=================== cronJobSchInsertSaveProducts [END]");
 
     }
 
